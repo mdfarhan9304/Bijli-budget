@@ -3,14 +3,14 @@ import Link from 'next/link';
 type SiteHeaderProps = { page: 'landing' | 'calculator'; className?: string };
 
 const navigation = [
-  ['How it works', 'how-it-works'],
+  ['Features', 'features'],
   ['Estimate bill', 'tariff-estimate'],
   ['Save energy', 'usage'],
 ] as const;
 
 export function SiteHeader({ page, className = '' }: SiteHeaderProps) {
   const sectionHref = (id: string) => {
-    if (id === 'how-it-works') return page === 'landing' ? '#how-it-works' : '/#how-it-works';
+    if (id === 'features') return page === 'landing' ? '#features' : '/#features';
     return page === 'calculator' ? `#${id}` : `/calculator#${id}`;
   };
 
