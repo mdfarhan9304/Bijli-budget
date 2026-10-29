@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root { color-scheme: light; --ink: #0b3558; --signal: #006bff; --slate: #476788; --cloud: #f8f9fb; --paper: #fff; --pebble: #f0f3f8; --hairline: #d4e0ed; }
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--cloud); color: var(--ink); font-family: Manrope, Avenir Next, Avenir, ui-sans-serif, sans-serif; }
+button, input, select { font: inherit; }
+::selection { background: #cfe2ff; color: var(--ink); }
+.report-grid { background-image: linear-gradient(rgba(0,107,255,.045) 1px, transparent 1px), linear-gradient(90deg, rgba(0,107,255,.045) 1px, transparent 1px); background-size: 32px 32px; }
+.atmosphere::before, .atmosphere::after { content: ''; position: absolute; z-index: -1; border-radius: 9999px; filter: blur(2px); opacity: .16; }
+.atmosphere::before { width: 330px; height: 330px; background: #e55cff; right: -100px; top: 110px; }
+.atmosphere::after { width: 270px; height: 270px; background: #0099ff; left: -140px; top: 540px; }
+.landing-shell { background-image: radial-gradient(circle at 83% 11%, rgba(0, 153, 255, .16), transparent 20rem), linear-gradient(115deg, rgba(255,255,255,.7), transparent 45%); }
+.landing-reveal { animation: landing-rise .75s both cubic-bezier(.18,.8,.25,1); }
+.landing-reveal:nth-child(2) { animation-delay: .08s; }
+.landing-reveal:nth-child(3) { animation-delay: .16s; }
+.landing-reveal:nth-child(4) { animation-delay: .24s; }
+.landing-reveal:nth-child(5) { animation-delay: .32s; }
+@keyframes landing-rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) { .landing-reveal { animation: none; } html { scroll-behavior: auto; } }
+@media print {
+  @page { size: A4 portrait; margin: 10mm; }
+  body { background: white; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  .screen-only { display: none !important; }
+  #print-report { display: block !important; width: 100%; max-width: none !important; margin: 0 !important; box-shadow: none !important; border: 0 !important; }
+  .print-break { break-inside: avoid; }
+  .one-page-report { min-height: 0; font-size: 11px; }
+}
