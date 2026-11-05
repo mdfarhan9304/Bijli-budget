@@ -25,7 +25,8 @@ const inr = (value: number) => new Intl.NumberFormat('en-IN', { style: 'currency
 
 /** A transparent local report used when a server-side AI key is not configured. */
 export function createLocalReport(input: ReportInput): SavingsReport {
-  const averageRate = input.units > 0 ? input.amount / input.units : input.rate;
+  const hasBillAverage = input.amount > 0 && input.units > 0;
+  const averageRate = hasBillAverage ? input.amount / input.units : input.rate;
   const coverage = input.units > 0 ? Math.round((input.applianceKwh / input.units) * 100) : 0;
   const ranked = [...input.actions].filter((action) => action.savedCost > 0).sort((a, b) => b.savedCost - a.savedCost);
   const actions = ranked.slice(0, 3).map((action) => ({
@@ -41,7 +42,9 @@ export function createLocalReport(input: ReportInput): SavingsReport {
       ? `Your bill records ${input.units.toFixed(0)} kWh over ${input.billingDays || 30} days. The entered appliances account for roughly ${coverage}% of that usage; treat the difference as other loads, appliance cycling, or input uncertainty.`
       : 'Add billed units to compare your entered appliance pattern against the utility bill.',
     observations: [
-      `Your all-in bill average is ${inr(averageRate)} per kWh. This is useful for planning, but it is not necessarily the marginal tariff for the next unit.`,
+      hasBillAverage
+        ? `Your all-in bill average is ${inr(averageRate)} per kWh. This is useful for planning, but it is not necessarily the marginal tariff for the next unit.`
+        : `Your planning rate is ${inr(averageRate)} per kWh. Add both bill total and billed units to calculate your actual all-in bill average.`,
       `The appliances you listed model ${input.applianceKwh.toFixed(1)} kWh/month (${inr(input.applianceCost)} at your chosen rate).`,
       top ? `${top.name} is the highest-impact listed behaviour change: ${top.savedKwh.toFixed(1)} kWh or ${inr(top.savedCost)} per month.` : 'No behaviour-change scenario is set yet.',
     ],
